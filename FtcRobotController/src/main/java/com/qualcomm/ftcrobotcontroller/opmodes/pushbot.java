@@ -35,8 +35,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import java.math;
 
+import java.lang.Math;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -87,17 +87,14 @@ public class pushbot extends OpMode {
 
         //get gamepad position
         float left = -gamepad1.left_stick_y;
-        float right = -gamepad1.right_stick_y;
-        right = Range.clip(right, -1, 1);
-        left = Range.clip(left, -1, 1);
+        float right = gamepad1.right_stick_y;
 
         //set values to drive motors
-        motorRight.setPower(Math.pow(right, 3));
-        motorLeft.setPower(Math.pow(left, 3));
+        mright.setPower(Math.pow(right, 3));
+        mleft.setPower(Math.pow(left, 3));
 
         //get gamepad positions
         float leftservo = -gamepad2.left_stick_y;
-        leftservo = Range.clip(leftservo, -1, 1);
 
         //set value to servo
         servo.setPosition(leftservo);
