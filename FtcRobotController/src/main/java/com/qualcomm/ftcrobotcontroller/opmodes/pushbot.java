@@ -50,10 +50,13 @@ public class pushbot extends OpMode {
     private String startDate;
     private ElapsedTime runtime = new ElapsedTime();
 
+//create motor and servo definitions in the hardware map
     DcMotor mright;
     DcMotor mleft;
     Servo servo;
 
+
+    //create drive variables
     double left;
     double right;
     double leftservo;
@@ -68,6 +71,7 @@ public class pushbot extends OpMode {
        */
     @Override
     public void init_loop() {
+        //resets time and date for begining of program
         startDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
         runtime.reset();
 
