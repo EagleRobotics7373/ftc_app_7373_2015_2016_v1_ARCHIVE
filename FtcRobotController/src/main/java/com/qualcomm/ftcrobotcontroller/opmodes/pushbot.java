@@ -86,15 +86,15 @@ public class pushbot extends OpMode {
         telemetry.addData("2 Status", "running for " + runtime.toString());
 
         //get gamepad position
-        float left = -gamepad1.left_stick_y;
-        float right = gamepad1.right_stick_y;
+        double left = -gamepad1.left_stick_y;
+        double right = gamepad1.right_stick_y;
 
         //set values to drive motors
         mright.setPower(Math.pow(right, 3));
         mleft.setPower(Math.pow(left, 3));
 
         //get gamepad positions
-        float leftservo = -gamepad2.left_stick_y;
+        double leftservo = -gamepad2.left_stick_y;
 
         //set value to servo
         servo.setPosition(leftservo);
