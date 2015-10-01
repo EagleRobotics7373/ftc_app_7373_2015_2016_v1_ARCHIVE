@@ -54,6 +54,10 @@ public class pushbot extends OpMode {
     DcMotor mleft;
     Servo servo;
 
+    double left;
+    double right;
+    double leftservo;
+
     @Override
     public void init() {
     }
@@ -84,17 +88,20 @@ public class pushbot extends OpMode {
         //reference telemetery
         telemetry.addData("1 Start", "NullOp started at " + startDate);
         telemetry.addData("2 Status", "running for " + runtime.toString());
+        telemetry.addData("Motor Left", "Power:" + left);
+        telemetry.addData("Motor Right", "Power:" + right);
+        telemetry.addData("Servo", "Position:" + leftservo*90);
 
         //get gamepad position
-        double left = -gamepad1.left_stick_y;
-        double right = gamepad1.right_stick_y;
+        left = -gamepad1.left_stick_y;
+        right = gamepad1.right_stick_y;
 
         //set values to drive motors
         mright.setPower(Math.pow(right, 3));
         mleft.setPower(Math.pow(left, 3));
 
         //get gamepad positions
-        double leftservo = -gamepad2.left_stick_y;
+        leftservo = -gamepad2.left_stick_y;
 
         //set value to servo
         servo.setPosition(leftservo);
