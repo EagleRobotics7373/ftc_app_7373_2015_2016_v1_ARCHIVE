@@ -32,12 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
-
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,14 +46,13 @@ import java.util.Date;
  * <p>
  *Enables control of the robot via the gamepad
  */
-public class encoder extends OpMode {
+public class Encoder extends OpMode {
 
     private String startDate;
     private ElapsedTime runtime = new ElapsedTime();
 
     DcMotor mright;
     DcMotor mleft;
-    Servo servo;
 
     @Override
     public void init() {
@@ -72,7 +70,9 @@ public class encoder extends OpMode {
         //get references from hardware map
         mright = hardwareMap.dcMotor.get("Motor Right");
         mleft = hardwareMap.dcMotor.get("Motor Left");
-        servo = hardwareMap.servo.get("Servo");
+        mleft.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        mright.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+
 
     }
 
@@ -81,27 +81,12 @@ public class encoder extends OpMode {
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
      */
     @Override
+
     public void loop() {
-        //reference telemetery
-        telemetry.addData("1 Start", "NullOp started at " + startDate);
-        telemetry.addData("2 Status", "running for " + runtime.toString());
-
-        //get gamepad position
-        float left = gamepad1.right_stick_y;
-        float right = -gamepad1.left_stick_y;
-        right = Range.clip(right, -1, 1);
-        left = Range.clip(left, -1, 1);
-
-        //set values to drive motors
-        mright.setPower(right * right * right); // will add math.pow() later
-        mleft.setPower(left * left * left);
-
-        //get gamepad positions
-        float leftservo = -gamepad2.left_stick_y;
-        leftservo = Range.clip(leftservo, -1, 1);
-
-        //set value to servo
-        servo.setPosition(leftservo);
+        for(int i=0; i<10000; i++ ) {
+            mright.setTargetPosition(4000*100);
+            mleft.setTargetPosition(-4000*100);
+        }
 
     }
 }
