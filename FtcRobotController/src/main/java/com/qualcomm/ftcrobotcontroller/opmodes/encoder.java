@@ -73,7 +73,6 @@ public class Encoder extends OpMode {
         mleft.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         mright.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
-
     }
 
     /*
