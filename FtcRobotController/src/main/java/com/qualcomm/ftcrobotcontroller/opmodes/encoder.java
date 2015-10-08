@@ -46,7 +46,7 @@ import java.util.Date;
  * <p>
  *Enables control of the robot via the gamepad
  */
-public class Encoder extends OpMode {
+public class encoder extends OpMode {
 
     private String startDate;
     private ElapsedTime runtime = new ElapsedTime();
