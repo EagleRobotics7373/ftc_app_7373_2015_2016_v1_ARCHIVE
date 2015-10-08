@@ -56,6 +56,9 @@ public class pushbot extends OpMode {
     DcMotor mleft;
     Servo servo;
 
+    int eleft;
+    int eright;
+
     @Override
     public void init() {
     }

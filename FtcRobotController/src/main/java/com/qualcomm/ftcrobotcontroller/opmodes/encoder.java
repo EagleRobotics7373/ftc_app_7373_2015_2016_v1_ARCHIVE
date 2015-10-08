@@ -48,11 +48,9 @@ import java.util.Date;
  */
 public class encoder extends OpMode {
 
-    private String startDate;
-    private ElapsedTime runtime = new ElapsedTime();
-
     DcMotor mright;
     DcMotor mleft;
+
 
     @Override
     public void init() {
@@ -64,14 +62,9 @@ public class encoder extends OpMode {
        */
     @Override
     public void init_loop() {
-        startDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
-        runtime.reset();
-
         //get references from hardware map
         mright = hardwareMap.dcMotor.get("Motor Right");
         mleft = hardwareMap.dcMotor.get("Motor Left");
-        mleft.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        mright.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
     }
 
@@ -82,10 +75,17 @@ public class encoder extends OpMode {
     @Override
 
     public void loop() {
-        for(int i=0; i<10000; i++ ) {
-            mright.setTargetPosition(4000*100);
-            mleft.setTargetPosition(-4000*100);
+
+        if(mright.getCurrentPosition() >= 5000 && mleft.getCurrentPosition() <= -5000 ) {
+            mright.setPower(0);
+            mleft.setPower(0);
+        }
+        else {
+            mright.setPower(1);
+            mleft.setPower(1);
+        }
+
         }
 
     }
-}
+
