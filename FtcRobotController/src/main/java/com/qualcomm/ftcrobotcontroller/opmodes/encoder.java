@@ -65,6 +65,7 @@ public class encoder extends OpMode {
         //get references from hardware map
         mright = hardwareMap.dcMotor.get("Motor Right");
         mleft = hardwareMap.dcMotor.get("Motor Left");
+        mleft.setDirection(DcMotor.Direction.REVERSE);
 
     }
 
@@ -76,7 +77,7 @@ public class encoder extends OpMode {
 
     public void loop() {
 
-        if(mright.getCurrentPosition() >= 5000 && mleft.getCurrentPosition() <= -5000 ) {
+        if(mright.getCurrentPosition() >= 1000 || mleft.getCurrentPosition() <= -1000 ) {
             mright.setPower(0);
             mleft.setPower(0);
         }
