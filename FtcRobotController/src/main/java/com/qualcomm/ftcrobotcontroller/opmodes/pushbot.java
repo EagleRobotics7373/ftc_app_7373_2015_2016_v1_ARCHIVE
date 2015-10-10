@@ -100,8 +100,8 @@ public class pushbot extends OpMode {
         mleft.setPower(left * left * left);
 
         //get gamepad positions
-        float leftservo = -gamepad2.left_stick_y;
-        leftservo = Range.clip(leftservo, -1, 1);
+        double leftservo = .5*(1-gamepad2.left_stick_y);
+        leftservo = Range.clip(leftservo, 0, 1);
 
         //set value to servo
         servo.setPosition(leftservo);

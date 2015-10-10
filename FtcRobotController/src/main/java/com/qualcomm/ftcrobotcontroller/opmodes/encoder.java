@@ -34,12 +34,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * TeleOp Mode
@@ -54,6 +49,14 @@ public class encoder extends OpMode {
 
     @Override
     public void init() {
+        //get references from hardware map
+        mright = hardwareMap.dcMotor.get("Motor Right");
+        mleft = hardwareMap.dcMotor.get("Motor Left");
+        mleft.setDirection(DcMotor.Direction.REVERSE);
+
+        //reset encoders
+        mright.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mleft.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
     }
 
     /*
@@ -61,11 +64,11 @@ public class encoder extends OpMode {
        * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
        */
     @Override
-    public void init_loop() {
-        //get references from hardware map
-        mright = hardwareMap.dcMotor.get("Motor Right");
-        mleft = hardwareMap.dcMotor.get("Motor Left");
-        mleft.setDirection(DcMotor.Direction.REVERSE);
+    public void start() {
+
+        //set motor run mode
+        mright.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        mleft.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 
     }
 
@@ -77,7 +80,7 @@ public class encoder extends OpMode {
 
     public void loop() {
 
-        if(mright.getCurrentPosition() >= 1000 || mleft.getCurrentPosition() <= -1000 ) {
+        if(mright.getCurrentPosition() >= 1120 || mright.getCurrentPosition() <= -1120 ) {
             mright.setPower(0);
             mleft.setPower(0);
         }
@@ -87,6 +90,11 @@ public class encoder extends OpMode {
         }
 
         }
-
+    public void stop() {
+        mright.setPower(0);
+        mleft.setPower(0);
     }
+    }
+
+
 
