@@ -85,8 +85,8 @@ public class encoder extends OpMode {
             mleft.setPower(0);
         }
         else {
-            mright.setPower(1);
-            mleft.setPower(1);
+            mright.setPower(.78);
+            mleft.setPower(.78);
         }
 
         }
