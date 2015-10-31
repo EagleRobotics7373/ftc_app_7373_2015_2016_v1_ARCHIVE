@@ -60,6 +60,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Encoder Test", encoder.class);
     manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
    manager.register("Test0", Test0.class);
+      manager.register("accel_test",Accel_Test.class);
       manager.register("tank_drive", Tank_Drive.class);
     /*`
      * Uncomment any of the following lines if you want to register an op mode.

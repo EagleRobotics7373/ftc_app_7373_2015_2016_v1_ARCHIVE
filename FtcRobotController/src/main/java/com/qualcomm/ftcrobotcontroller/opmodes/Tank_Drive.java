@@ -33,10 +33,10 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -49,15 +49,16 @@ public class Tank_Drive extends OpMode {
 
     private String startDate;
     private ElapsedTime runtime = new ElapsedTime();
-
+//initiate variables
     DcMotor mright1;
     DcMotor mleft1;
     DcMotor mright2;
     DcMotor mleft2;
-    Servo servo;
-
-    int eleft;
-    int eright;
+    DcMotor arch;
+    DcMotor intake;
+    DcMotor convayer;
+    DcMotor pullup;
+    int mode = 1;
 
     @Override
     public void init() {
@@ -75,8 +76,22 @@ public class Tank_Drive extends OpMode {
         //get references from hardware map
         mleft1 = hardwareMap.dcMotor.get("Motor Right");
         mleft2 = hardwareMap.dcMotor.get("Motor Left");
+        intake = hardwareMap.dcMotor.get("Intake");
         mright1 = hardwareMap.dcMotor.get("m1");
         mright2 = hardwareMap.dcMotor.get("m2");
+        convayer = hardwareMap.dcMotor.get("convayer");
+        arch = hardwareMap.dcMotor.get("arch");
+        pullup = hardwareMap.dcMotor.get("pullup");
+
+        //set dc motor modes to run with encoders and reset the encoders
+        mleft1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mleft2.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mright1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mright2.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mleft1.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        mleft2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        mright1.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        mright2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 
     }
 
@@ -91,68 +106,71 @@ public class Tank_Drive extends OpMode {
         telemetry.addData("2 Status", "running for " + runtime.toString());
 
         //get gamepad position
+        boolean d_up = gamepad1.dpad_up;
+        boolean d_right = gamepad1.dpad_right;
+        boolean d_down = gamepad1.dpad_down;
+        boolean d_left = gamepad1.dpad_right;
+        if (d_up == true)
+        {
+            mode = 1;
+
+        }
+        if(d_left == true || d_right == true)
+        {
+            mode = 2;
+        }
+        if(d_down == true)
+        {
+            mode = 3;
+        }
+
+
+        //get gamepad 1 joystick position and clip values
         float left = gamepad1.right_stick_y;
-        float right = -gamepad1.left_stick_y;
+        float right = gamepad1.left_stick_y;
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
-        int mode = 0;
-       boolean button = gamepad1.a;
-        if(button)
+        //drive system
+        mleft1.setPower(-left/mode);
+        mleft1.setPower(-left/mode);
+        mright1.setPower(right/mode);
+        mright1.setPower(right/mode);
+
+
+        //get intake drive values
+        boolean intakef = gamepad2.right_bumper;
+        boolean intakeb = gamepad2.left_bumper;
+        //intake system
+        if(intakef)
         {
-            if (mode == 3)
-            {
-                mode = 0;
-            }else {
-                mode += 1;
-            }
-            if (mode ==0)
-            {
-                telemetry.addData("Low Gear", 1);
-            }
-            if (mode == 1)
-            {
-                telemetry.addData("medium gear", 1);
-            }
-            if (mode == 2)
-            {
-                telemetry.addData("regular", 1);
-            }
-            if (mode == 3)
-            {
-                telemetry.addData("Reverse", 1);
-            }
+            intake.setPower(1);
         }
-        switch(mode)
+        if(intakeb)
         {
-        //set values to drive motors'
-        case 1: mode = 0;
-            mleft1.setPower((right*.9/4)); // will add math.pow() later
-            mleft2.setPower((right*.9/4)); // will add math.pow() later
-            mright1.setPower((left/4));
-            mright2.setPower((left/4));
-        break;
-
-            case 2: mode = 1;
-
-            mleft1.setPower((right*.9)/2.5); // will add math.pow() later
-            mleft2.setPower((right*.9)/2.5); // will add math.pow() later
-            mright1.setPower((left)/2.5);
-            mright2.setPower((left)/2.5);
-                break;
-            case 3: mode = 2;
-                mleft1.setPower((right*.9)); // will add math.pow() later
-                mleft2.setPower((right*.9)); // will add math.pow() later
-                mright1.setPower((left));
-                mright2.setPower((left));
-                break;
-            case 4: mode = 3;
-                mleft1.setPower(-(right*.9)); // will add math.pow() later
-                mleft2.setPower(-(right*.9)); // will add math.pow() later
-                mright1.setPower(-(left));
-                mright2.setPower(-(left));
-                break;
+            intake.setPower(1);
         }
 
+
+        //convayer system
+        float convayerf = gamepad2.right_trigger;
+        float convayerb = gamepad2.left_trigger;
+        if(convayerf > 0)
+        {
+            convayer.setPower(1);
+        }
+        if(convayerb > 0)
+        {
+            convayer.setPower(-1);
+        }
+
+
+        //get gamepad 2 joystick values
+        float left2 = gamepad2.right_stick_y;
+        float right2 = -gamepad2.left_stick_y;
+        //Arch reactor
+        arch.setPower(right2/2);
+        //PullUp
+        pullup.setPower(left2/2);
 
 
 

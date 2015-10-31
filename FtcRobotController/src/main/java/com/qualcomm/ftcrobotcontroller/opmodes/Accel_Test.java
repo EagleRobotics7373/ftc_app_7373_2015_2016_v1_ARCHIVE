@@ -613,9 +613,17 @@ int MPU6050_ACCEL_ON_DELAY_0MS = MPU6050_ACCEL_ON_DELAY_0;
      */
   @Override
   public void init_loop() {
+
+     // byte a[] = acc.getI2cReadCache();
+     //String b = a.toString();
+     // telemetry.addData(b,0);
+
+
     startDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
     runtime.reset();
     telemetry.addData("Null Op Init Loop", runtime.toString());
+     acc.notify();
+
   }
 
   /*
@@ -624,7 +632,23 @@ int MPU6050_ACCEL_ON_DELAY_0MS = MPU6050_ACCEL_ON_DELAY_0;
    */
   @Override
   public void loop() {
+      telemetry.addData(acc.getDeviceName(), 0);
     telemetry.addData("1 Start", "Accel_Test started at " + startDate);
     telemetry.addData("2 Status", "running for " + runtime.toString());
+     int b1 = acc.getI2cReadCache()[0];
+      int b2 = acc.getI2cReadCache()[1];
+      int b3 = acc.getI2cReadCache()[2];
+      int b4 = acc.getI2cReadCache()[3];
+      int b5 = acc.getI2cReadCache()[4];
+      int b6 = acc.getI2cReadCache()[5];
+      int b7 = acc.getI2cReadCache()[6];
+      int b8 = acc.getI2cReadCache()[7];
+      telemetry.addData(Integer.toString(b1), 0);
+      telemetry.addData(Integer.toString(b2), 0);
+      telemetry.addData(Integer.toString(b3), 0);
+      telemetry.addData(Integer.toString(b4), 0);
+      telemetry.addData(Integer.toString(b5), 0);
+      telemetry.addData(Integer.toString(b6), 0);
+      telemetry.addData(Integer.toString(b7), 0);
   }
 }

@@ -41,6 +41,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannelController;
+import com.qualcomm.robotcore.hardware.I2cDevice;
 
 /*
  *
@@ -71,6 +72,7 @@ public class AdafruitRGBExample extends LinearOpMode {
 
   ColorSensor sensorRGB;
   DeviceInterfaceModule cdim;
+  I2cDevice acc;
 
   // we assume that the LED pin of the RGB sensor is connected to
   // digital port 5 (zero indexed).
