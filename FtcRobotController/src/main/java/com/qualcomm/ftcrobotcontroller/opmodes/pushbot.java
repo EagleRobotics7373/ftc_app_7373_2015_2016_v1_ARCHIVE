@@ -73,9 +73,7 @@ public class pushbot extends OpMode {
         runtime.reset();
 
         //get references from hardware map
-        mright = hardwareMap.dcMotor.get("Motor Right");
-        mleft = hardwareMap.dcMotor.get("Motor Left");
-        servo = hardwareMap.servo.get("Servo");
+        mright = hardwareMap.dcMotor.get("arch");
 
     }
 
@@ -94,17 +92,8 @@ public class pushbot extends OpMode {
         float right = -gamepad1.left_stick_y;
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
+mright.setPower(right);
 
-        //set values to drive motors
-        mright.setPower(right * right * right); // will add math.pow() later
-        mleft.setPower(left * left * left);
-
-        //get gamepad positions
-        double leftservo = .5*(1-gamepad2.left_stick_y);
-        leftservo = Range.clip(leftservo, 0, 1);
-
-        //set value to servo
-        servo.setPosition(leftservo);
 
     }
 }
