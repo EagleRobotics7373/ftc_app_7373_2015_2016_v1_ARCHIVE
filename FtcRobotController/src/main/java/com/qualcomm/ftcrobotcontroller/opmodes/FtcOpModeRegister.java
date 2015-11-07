@@ -56,12 +56,12 @@ public class FtcOpModeRegister implements OpModeRegister {
      */
 //current opmodes go here
     manager.register("NullOp", NullOp.class);
-    manager.register("Pushbot", pushbot.class);
-    manager.register("Encoder Test", encoder.class);
+    manager.register("Pushbot", pushbot1.class);
+    manager.register("Encoder Test", encodertest.class);
     manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
-   manager.register("Test0", Test0.class);
+   manager.register("Test0dup", Test0dup.class);
       manager.register("accel_test",Accel_Test.class);
-      manager.register("tank_drive", Tank_Drive.class);
+      manager.register("Main Robot Teleop", Main_Robot_Teleop.class);
     /*`
      * Uncomment any of the following lines if you want to register an op mode.
      */
