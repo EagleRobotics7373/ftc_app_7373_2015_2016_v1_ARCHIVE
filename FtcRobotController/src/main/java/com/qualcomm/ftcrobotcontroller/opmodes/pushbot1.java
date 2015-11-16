@@ -58,8 +58,14 @@ public class pushbot1 extends OpMode {
 
     int eleft;
     int eright;
-
+    public void sleep(int ms)
+    {
+        try { Thread.sleep(ms); }
+// Have to catch an interrupt exception that hopefully never happens.
+        catch (InterruptedException ex) {Thread.currentThread().interrupt(); }
+    }
     @Override
+
     public void init() {
     }
     //
@@ -74,6 +80,7 @@ public class pushbot1 extends OpMode {
 
         //get references from hardware map
         mright = hardwareMap.dcMotor.get("arch");
+        mleft = hardwareMap.dcMotor.get("mleft");
 
     }
 
@@ -92,8 +99,31 @@ public class pushbot1 extends OpMode {
         float right = -gamepad1.left_stick_y;
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
-        mright.setPower(right);
+        mright.setPower(right*right*right);
+        mleft.setPower(left/2);
+        if(gamepad1.a)
+        {
 
+            servo.setPosition(.10);
+            sleep(1000);
+            servo.setPosition(.20);
+            sleep(1000);
+            servo.setPosition(.30);
+            sleep(1000);
+            servo.setPosition(.40);
+            sleep(1000);
+            servo.setPosition(.50);
+            sleep(1000);
+            servo.setPosition(.60);
+            sleep(1000);
+            servo.setPosition(.70);
+            sleep(1000);
+            servo.setPosition(.80);
+            sleep(1000);
+            servo.setPosition(.90);
+            sleep(1000);
+            servo.setPosition(0);
+        }
 
     }
 }

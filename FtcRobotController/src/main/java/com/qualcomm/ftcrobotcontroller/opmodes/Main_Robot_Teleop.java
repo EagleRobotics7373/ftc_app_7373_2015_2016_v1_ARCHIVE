@@ -58,8 +58,10 @@ public class Main_Robot_Teleop extends OpMode {
     DcMotor intake;
     DcMotor convayer;
     DcMotor pullup;
+    Servo servor;
+    Servo servol;
     int mode = 1;
-
+    boolean flag = false;
     @Override
     public void init() {
     }
@@ -81,7 +83,9 @@ public class Main_Robot_Teleop extends OpMode {
         mright2 = hardwareMap.dcMotor.get("m2");
         convayer = hardwareMap.dcMotor.get("convayer");
         arch = hardwareMap.dcMotor.get("arch");
-        pullup = hardwareMap.dcMotor.get("pullup");
+        servol = hardwareMap.servo.get("servol");
+        servor = hardwareMap.servo.get("servor");
+        //pullup = hardwareMap.dcMotor.get("pullup");
 
         //set dc motor modes to run with encoders and reset the encoders
         mleft1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -94,12 +98,30 @@ public class Main_Robot_Teleop extends OpMode {
         mright2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 
     }
-
+public void servorf(boolean flag)
+{
+    if(flag == true)
+    {
+        servor.setPosition(-90);
+    }else{
+        servor.setPosition(0);
+    }
+}
+    public void servolf(boolean flag)
+    {
+        if(flag == true)
+        {
+            servol.setPosition(-90);
+        }else{
+            servol.setPosition(0);
+        }
+    }
     /*
      * This method will be called repeatedly in a loop
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
      */
     @Override
+
     public void loop() {
         //reference telemetery
         telemetry.addData("1 Start", "NullOp started at " + startDate);
@@ -162,8 +184,16 @@ public class Main_Robot_Teleop extends OpMode {
         {
             convayer.setPower(-1);
         }
-
-
+        boolean a = gamepad2.b;
+        boolean x = gamepad2.x;
+        if(a)
+        {
+            servorf(flag);
+        }
+        if(x)
+        {
+            servolf(flag);
+        }
         //get gamepad 2 joystick values
         float left2 = gamepad2.right_stick_y;
         float right2 = -gamepad2.left_stick_y;
