@@ -93,10 +93,10 @@ public class Main_Robot_Teleop extends OpMode {
         arch = hardwareMap.dcMotor.get("arch");
         servol = hardwareMap.servo.get("bridgel");
         servor = hardwareMap.servo.get("bridgel");
-        //pullup = hardwareMap.dcMotor.get("pullup");
+        pullup = hardwareMap.dcMotor.get("pullup");
 
         //set dc motor modes to run with encoders and reset the encoders
-        /*mleft1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mleft1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
         mleft2.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
         mright1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
         mright2.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -104,7 +104,7 @@ public class Main_Robot_Teleop extends OpMode {
         mleft2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright1.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-*/
+
     }
 
     public void servolf(boolean flag)
