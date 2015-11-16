@@ -46,7 +46,15 @@ import java.util.Date;
  *Enables control of the robot via the gamepad
  */
 public class Main_Robot_Teleop extends OpMode {
-
+    public void servorf(boolean flag)
+    {
+        if(flag == true)
+        {
+            servor.setPosition(-90);
+        }else{
+            servor.setPosition(0);
+        }
+    }
     private String startDate;
     private ElapsedTime runtime = new ElapsedTime();
     //initiate variables
@@ -76,19 +84,19 @@ public class Main_Robot_Teleop extends OpMode {
         runtime.reset();
 
         //get references from hardware map
-        mleft1 = hardwareMap.dcMotor.get("Motor Right");
-        mleft2 = hardwareMap.dcMotor.get("Motor Left");
-        intake = hardwareMap.dcMotor.get("Intake");
-        mright1 = hardwareMap.dcMotor.get("m1");
-        mright2 = hardwareMap.dcMotor.get("m2");
-        convayer = hardwareMap.dcMotor.get("convayer");
+        mleft1 = hardwareMap.dcMotor.get("leftf");
+        mleft2 = hardwareMap.dcMotor.get("leftr");
+        intake = hardwareMap.dcMotor.get("intake");
+        mright1 = hardwareMap.dcMotor.get("rightf");
+        mright2 = hardwareMap.dcMotor.get("rightr");
+        convayer = hardwareMap.dcMotor.get("conveyer");
         arch = hardwareMap.dcMotor.get("arch");
-        servol = hardwareMap.servo.get("servol");
-        servor = hardwareMap.servo.get("servor");
+        servol = hardwareMap.servo.get("bridgel");
+        servor = hardwareMap.servo.get("bridgel");
         //pullup = hardwareMap.dcMotor.get("pullup");
 
         //set dc motor modes to run with encoders and reset the encoders
-        mleft1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
+        /*mleft1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
         mleft2.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
         mright1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
         mright2.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -96,17 +104,9 @@ public class Main_Robot_Teleop extends OpMode {
         mleft2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright1.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+*/
+    }
 
-    }
-public void servorf(boolean flag)
-{
-    if(flag == true)
-    {
-        servor.setPosition(-90);
-    }else{
-        servor.setPosition(0);
-    }
-}
     public void servolf(boolean flag)
     {
         if(flag == true)
@@ -186,7 +186,7 @@ public void servorf(boolean flag)
         }
         boolean a = gamepad2.b;
         boolean x = gamepad2.x;
-        if(a)
+       if(a)
         {
             servorf(flag);
         }
