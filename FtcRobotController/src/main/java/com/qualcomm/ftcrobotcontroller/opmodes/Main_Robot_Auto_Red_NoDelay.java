@@ -34,9 +34,9 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -45,7 +45,8 @@ import java.util.Date;
  * <p>
  *Enables control of the robot via the gamepad
  */
-public class Main_Robot_Teleop extends OpMode {
+public class Main_Robot_Auto_Red_NoDelay extends OpMode {
+
     private String startDate;
     private ElapsedTime runtime = new ElapsedTime();
     //initiate variables
@@ -57,13 +58,8 @@ public class Main_Robot_Teleop extends OpMode {
     DcMotor intake;
     DcMotor convayer;
     DcMotor pullup;
-    Servo servor;
-    Servo servol;
-
-    //intiate mode int and servo bridge control bool
     int mode = 1;
-    boolean bridgeleft = false;
-    boolean bridgeright = false;
+
     @Override
     public void init() {
     }
@@ -78,19 +74,17 @@ public class Main_Robot_Teleop extends OpMode {
         runtime.reset();
 
         //get references from hardware map
-        mleft1 = hardwareMap.dcMotor.get("leftf");
-        mleft2 = hardwareMap.dcMotor.get("leftr");
-        intake = hardwareMap.dcMotor.get("intake");
-        mright1 = hardwareMap.dcMotor.get("rightf");
-        mright2 = hardwareMap.dcMotor.get("rightr");
-        convayer = hardwareMap.dcMotor.get("conveyer");
+        mleft1 = hardwareMap.dcMotor.get("Motor Right");
+        mleft2 = hardwareMap.dcMotor.get("Motor Left");
+        intake = hardwareMap.dcMotor.get("Intake");
+        mright1 = hardwareMap.dcMotor.get("m1");
+        mright2 = hardwareMap.dcMotor.get("m2");
+        convayer = hardwareMap.dcMotor.get("convayer");
         arch = hardwareMap.dcMotor.get("arch");
-        servol = hardwareMap.servo.get("bridgel");
-        servor = hardwareMap.servo.get("bridgel");
         pullup = hardwareMap.dcMotor.get("pullup");
 
         //set dc motor modes to run with encoders and reset the encoders
-        mleft1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
+       /* mleft1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
         mleft2.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
         mright1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
         mright2.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -98,6 +92,7 @@ public class Main_Robot_Teleop extends OpMode {
         mleft2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright1.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+*/
     }
 
     /*
@@ -105,7 +100,6 @@ public class Main_Robot_Teleop extends OpMode {
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
      */
     @Override
-
     public void loop() {
         //reference telemetery
         telemetry.addData("1 Start", "NullOp started at " + startDate);
@@ -115,16 +109,17 @@ public class Main_Robot_Teleop extends OpMode {
         boolean d_up = gamepad1.dpad_up;
         boolean d_right = gamepad1.dpad_right;
         boolean d_down = gamepad1.dpad_down;
-        boolean d_left = gamepad1.dpad_left;
-        if (d_up)
+        boolean d_left = gamepad1.dpad_right;
+        if (d_up == true)
         {
             mode = 1;
+
         }
-        if(d_left || d_right)
+        if(d_left == true || d_right == true)
         {
             mode = 2;
         }
-        if(d_down)
+        if(d_down == true)
         {
             mode = 3;
         }
@@ -156,7 +151,7 @@ public class Main_Robot_Teleop extends OpMode {
         }
 
 
-        //conveyer system
+        //convayer system
         float convayerf = gamepad2.right_trigger;
         float convayerb = gamepad2.left_trigger;
         if(convayerf > 0)
@@ -166,27 +161,6 @@ public class Main_Robot_Teleop extends OpMode {
         if(convayerb > 0)
         {
             convayer.setPower(-1);
-        }
-
-        //get servo bridges vars
-        boolean a = gamepad1.b;
-        boolean x = gamepad1.x;
-        //check the vars and write the right action
-       if(a)
-        {
-            servor.setPosition(90);
-        }
-        else
-       {
-           servor.setPosition(0);
-       }
-        if(x)
-        {
-            servol.setPosition(90);
-        }
-        else
-        {
-            servol.setPosition(0);
         }
 
 

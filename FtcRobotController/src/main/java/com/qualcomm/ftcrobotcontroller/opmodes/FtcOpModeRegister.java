@@ -55,15 +55,9 @@ public class FtcOpModeRegister implements OpModeRegister {
      * If two or more op modes are registered with the same name, the app will display an error.
      */
 //current opmodes go here
-
-    manager.register("NullOp", NullOp.class);
-    manager.register("Pushbot", pushbot1.class);
-    manager.register("Encoder Test", encodertest.class);
-    manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
-   manager.register("Test0dup", Test0dup.class);
-      manager.register("accel_test",acc_test.class);
+      manager.register("NullOp", NullOp.class);
       manager.register("Main Robot Teleop", Main_Robot_Teleop.class);
-      manager.register("test", test.class);
+      manager.register("Auto Red 1 0", Main_Robot_Auto_Red_NoDelay.class);
     /*`
      * Uncomment any of the following lines if you want to register an op mode.
      */
