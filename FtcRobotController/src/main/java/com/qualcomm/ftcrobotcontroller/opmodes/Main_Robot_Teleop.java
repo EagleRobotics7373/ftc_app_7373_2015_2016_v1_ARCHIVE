@@ -165,15 +165,15 @@ public class Main_Robot_Teleop extends OpMode {
 
 
         //get gamepad 1 joystick position and clip values
-        left = gamepad1.right_stick_y;
-        right = gamepad1.left_stick_y;
+        left = gamepad1.left_stick_y;
+        right = gamepad1.right_stick_y;
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
         //drive system
-        mleft1.setPower(-left/mode);
-        mleft2.setPower(-left/mode);
-        mright1.setPower(right/mode);
-        mright2.setPower(right/mode);
+        mleft1.setPower(-left);
+        mleft2.setPower(-left);
+        mright1.setPower(right);
+        mright2.setPower(right);
 
 
         //get intake drive values
@@ -208,7 +208,7 @@ public class Main_Robot_Teleop extends OpMode {
         //check the values and write to control bool
             // take control bool and write to servo
             if (b) {
-                servor.setPosition(.75);
+                servor.setPosition(1);
             }
             if (y){
                 servor.setPosition(.3);
@@ -217,7 +217,7 @@ public class Main_Robot_Teleop extends OpMode {
                 servol.setPosition(1);
             }
             if (a){
-                servol.setPosition(.5);
+                servol.setPosition(.4);
             }
 
 
