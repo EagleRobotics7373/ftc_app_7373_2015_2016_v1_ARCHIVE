@@ -48,20 +48,43 @@ import java.util.Date;
 public class Main_Robot_Teleop extends OpMode {
     private String startDate;
     private ElapsedTime runtime = new ElapsedTime();
-    //initiate variables
+
+    //initiate variables for control
     DcMotor mright1;
     DcMotor mleft1;
     DcMotor mright2;
     DcMotor mleft2;
-    DcMotor arch;
+    DcMotor arcreactor;
     DcMotor intake;
     DcMotor convayer;
     DcMotor pullup;
     Servo servor;
     Servo servol;
 
-    //intiate mode int and servo bridge control bool
+    // for drive ratio on controller 1
     int mode = 1;
+    boolean d_up = gamepad1.dpad_up;
+    boolean d_right = gamepad1.dpad_right;
+    boolean d_down = gamepad1.dpad_down;
+    boolean d_left = gamepad1.dpad_left;
+    //for left and right bumpers of controller 2
+    boolean convayerf;
+    boolean convayerb;
+    //for left and right triggers on controller 2
+    float intakef;
+    float intakeb;
+    //left and right joystick on controller 1
+    float right;
+    float left;
+    //left and right joystick on controller 2
+    float left2;
+    float right2;
+    //set a and x on controller 1
+    boolean b;
+    boolean x;
+    boolean b1 = false;
+    boolean x1 = false;
+
     @Override
     public void init() {
     }
@@ -82,7 +105,7 @@ public class Main_Robot_Teleop extends OpMode {
         mright1 = hardwareMap.dcMotor.get("rightf");
         mright2 = hardwareMap.dcMotor.get("rightr");
         convayer = hardwareMap.dcMotor.get("conveyer");
-        arch = hardwareMap.dcMotor.get("arch");
+        arcreactor = hardwareMap.dcMotor.get("arch");
         servol = hardwareMap.servo.get("bridgel");
         servor = hardwareMap.servo.get("bridgel");
         pullup = hardwareMap.dcMotor.get("pullup");
@@ -106,14 +129,30 @@ public class Main_Robot_Teleop extends OpMode {
 
     public void loop() {
         //reference telemetery
-        telemetry.addData("1 Start", "NullOp started at " + startDate);
+        telemetry.addData("1 Start", "TeleOP started at " + startDate);
         telemetry.addData("2 Status", "running for " + runtime.toString());
 
-        //get gamepad position
-        boolean d_up = gamepad1.dpad_up;
-        boolean d_right = gamepad1.dpad_right;
-        boolean d_down = gamepad1.dpad_down;
-        boolean d_left = gamepad1.dpad_left;
+        //get gamepad position and set dpad vars accordingly
+        if (gamepad1.dpad_up) {
+            d_up = true;
+            d_right = false;
+            d_down = false;
+            d_left = false;
+        }
+        if (gamepad1.dpad_right || gamepad1.dpad_left) {
+            d_up = false;
+            d_right = true;
+            d_left = true;
+            d_down = false;
+        }
+        if (gamepad1.dpad_up) {
+            d_down = true;
+            d_up = true;
+            d_right = false;
+            d_left = false;
+        }
+
+        //set speed ratio based on d_pad
         if (d_up)
         {
             mode = 1;
@@ -129,74 +168,81 @@ public class Main_Robot_Teleop extends OpMode {
 
 
         //get gamepad 1 joystick position and clip values
-        float left = gamepad1.right_stick_y;
-        float right = gamepad1.left_stick_y;
+        left = gamepad1.right_stick_y;
+        right = gamepad1.left_stick_y;
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
         //drive system
         mleft1.setPower(-left/mode);
-        mleft1.setPower(-left/mode);
+        mleft2.setPower(-left/mode);
         mright1.setPower(right/mode);
-        mright1.setPower(right/mode);
+        mright2.setPower(right/mode);
 
 
         //get intake drive values
-        boolean intakef = gamepad2.right_bumper;
-        boolean intakeb = gamepad2.left_bumper;
+        intakef = gamepad2.right_trigger;
+        intakeb = gamepad2.left_trigger;
+        intakef = Range.clip(intakef, -1, 1);
+        intakeb = Range.clip(intakeb, -1, 1);
         //intake system
-        if(intakef)
-        {
-            intake.setPower(1);
-        }
-        if(intakeb)
-        {
-            intake.setPower(1);
-        }
+        convayer.setPower(-intakef);
+        convayer.setPower(intakeb);
 
 
         //conveyer system
-        float convayerf = gamepad2.right_trigger;
-        float convayerb = gamepad2.left_trigger;
-        if(convayerf > 0)
+        convayerf = gamepad2.right_bumper;
+        convayerb = gamepad2.left_bumper;
+        if(convayerf)
         {
             convayer.setPower(1);
         }
-        if(convayerb > 0)
+        else
+        {
+            convayer.setPower(0);
+        }
+        if(convayerb)
         {
             convayer.setPower(-1);
         }
-
-        //get servo bridges vars
-        boolean a = gamepad1.b;
-        boolean x = gamepad1.x;
-        //check the vars and write the right action
-       if(a)
-        {
-            servor.setPosition(90);
-        }
         else
-       {
-           servor.setPosition(0);
-       }
+        {
+            convayer.setPower(0);
+        }
+
+        //get servo bridges controller values
+        b = gamepad1.b;
+        x = gamepad1.x;
+        //check the values and write to control bool
+       if(b)
+        {
+            b1 = !b1;
+        }
         if(x)
         {
-            servol.setPosition(90);
+            x1 = !x1;
         }
-        else
-        {
+        // take control bool and write to servo
+        if(b1){
+            servor.setPosition(90);
+        } else {
+            servor.setPosition(0);
+        }
+        if(x1){
+            servol.setPosition(90);
+        } else {
             servol.setPosition(0);
         }
 
 
-        //get gamepad 2 joystick values
-        float left2 = gamepad2.right_stick_y;
-        float right2 = -gamepad2.left_stick_y;
-        //Arch reactor
-        arch.setPower(right2/2);
-        //PullUp
+        //get gamepad 2 joystick values and clip ranges
+        left2 = -gamepad2.right_stick_y;
+        right2 = -gamepad2.left_stick_y;
+        left2 = Range.clip(left2,-1,1);
+        right2 = Range.clip(right2,-1,1);
+        //Arc reactor write motor power scaled by half
+        arcreactor.setPower(right2/2);
+        //PullUp write motor power scaled by half
         pullup.setPower(left2/2);
-
-
 
     }
 }
