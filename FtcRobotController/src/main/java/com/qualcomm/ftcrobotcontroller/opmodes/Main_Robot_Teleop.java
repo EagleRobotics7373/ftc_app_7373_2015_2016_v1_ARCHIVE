@@ -82,8 +82,8 @@ public class Main_Robot_Teleop extends OpMode {
     //set a and x on controller 1
     boolean b;
     boolean x;
-    boolean b1 = false;
-    boolean x1 = false;
+    boolean y;
+    boolean a;
 
     @Override
     public void init() {
@@ -153,16 +153,13 @@ public class Main_Robot_Teleop extends OpMode {
         }
 
         //set speed ratio based on d_pad
-        if (d_up)
-        {
+        if (d_up) {
             mode = 1;
         }
-        if(d_left || d_right)
-        {
+        if (d_left || d_right) {
             mode = 2;
         }
-        if(d_down)
-        {
+        if (d_down) {
             mode = 3;
         }
 
@@ -185,27 +182,20 @@ public class Main_Robot_Teleop extends OpMode {
         intakef = Range.clip(intakef, -1, 1);
         intakeb = Range.clip(intakeb, -1, 1);
         //intake system
-        convayer.setPower(-intakef);
-        convayer.setPower(intakeb);
+        if (intakef > 0){
+            intakeb = -intakef;
+        }
+        intake.setPower(intakeb);
 
 
         //conveyer system
         convayerf = gamepad2.right_bumper;
         convayerb = gamepad2.left_bumper;
-        if(convayerf)
-        {
+        if (convayerf) {
             convayer.setPower(1);
-        }
-        else
-        {
-            convayer.setPower(0);
-        }
-        if(convayerb)
-        {
+        } else if (convayerb) {
             convayer.setPower(-1);
-        }
-        else
-        {
+        } else {
             convayer.setPower(0);
         }
 
@@ -213,36 +203,31 @@ public class Main_Robot_Teleop extends OpMode {
         b = gamepad1.b;
         x = gamepad1.x;
         //check the values and write to control bool
-       if(b)
-        {
-            b1 = !b1;
-        }
-        if(x)
-        {
-            x1 = !x1;
-        }
-        // take control bool and write to servo
-        if(b1){
-            servor.setPosition(90);
-        } else {
-            servor.setPosition(0);
-        }
-        if(x1){
-            servol.setPosition(90);
-        } else {
-            servol.setPosition(0);
-        }
+            // take control bool and write to servo
+            if (b) {
+                servor.setPosition(.75);
+            }
+            if (y){
+                servor.setPosition(.5);
+            }
+            if (x) {
+                servol.setPosition(.75);
+            }
+            if (a){
+                servol.setPosition(.5);
+            }
 
 
-        //get gamepad 2 joystick values and clip ranges
-        left2 = -gamepad2.right_stick_y;
-        right2 = -gamepad2.left_stick_y;
-        left2 = Range.clip(left2,-1,1);
-        right2 = Range.clip(right2,-1,1);
-        //Arc reactor write motor power scaled by half
-        arcreactor.setPower(right2/2);
-        //PullUp write motor power scaled by half
-        pullup.setPower(left2/2);
+            //get gamepad 2 joystick values and clip ranges
+            left2 = -gamepad2.right_stick_y;
+            right2 = -gamepad2.left_stick_y;
+            left2 = Range.clip(left2, -1, 1);
+            right2 = Range.clip(right2, -1, 1);
+            //Arc reactor write motor power scaled by half
+            arcreactor.setPower(right2 / 3);
+            //PullUp write motor power scaled by half
+            pullup.setPower(left2 / 2);
 
+        }
     }
-}
+
