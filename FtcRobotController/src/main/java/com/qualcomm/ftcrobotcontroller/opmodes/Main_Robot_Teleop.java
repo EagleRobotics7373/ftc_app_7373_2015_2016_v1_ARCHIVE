@@ -62,8 +62,6 @@ public class Main_Robot_Teleop extends OpMode {
 
     //intiate mode int and servo bridge control bool
     int mode = 1;
-    boolean bridgeleft = false;
-    boolean bridgeright = false;
     @Override
     public void init() {
     }
