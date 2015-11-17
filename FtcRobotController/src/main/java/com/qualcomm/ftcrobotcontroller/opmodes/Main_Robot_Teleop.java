@@ -106,7 +106,7 @@ public class Main_Robot_Teleop extends OpMode {
         mright2 = hardwareMap.dcMotor.get("rightr");
         convayer = hardwareMap.dcMotor.get("conveyer");
         arcreactor = hardwareMap.dcMotor.get("arch");
-        servol = hardwareMap.servo.get("bridgel");
+        servol = hardwareMap.servo.get("bridger");
         servor = hardwareMap.servo.get("bridgel");
         pullup = hardwareMap.dcMotor.get("pullup");
 
@@ -202,16 +202,19 @@ public class Main_Robot_Teleop extends OpMode {
         //get servo bridges controller values
         b = gamepad1.b;
         x = gamepad1.x;
+        y = gamepad1.y;
+        a = gamepad1.a;
+
         //check the values and write to control bool
             // take control bool and write to servo
             if (b) {
                 servor.setPosition(.75);
             }
             if (y){
-                servor.setPosition(.5);
+                servor.setPosition(.3);
             }
             if (x) {
-                servol.setPosition(.75);
+                servol.setPosition(1);
             }
             if (a){
                 servol.setPosition(.5);
