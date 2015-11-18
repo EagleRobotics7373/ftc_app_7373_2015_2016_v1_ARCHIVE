@@ -229,7 +229,7 @@ public class Main_Robot_Teleop extends OpMode {
             //Arc reactor write motor power scaled by half
             arcreactor.setPower(right2 / 3);
             //PullUp write motor power scaled by half
-            pullup.setPower(left2 / 2);
+            pullup.setPower(-left2 / 2);
 
         }
     }
