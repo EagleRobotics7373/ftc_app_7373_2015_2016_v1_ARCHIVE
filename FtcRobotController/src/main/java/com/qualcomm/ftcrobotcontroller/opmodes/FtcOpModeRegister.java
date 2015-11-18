@@ -58,6 +58,7 @@ public class FtcOpModeRegister implements OpModeRegister {
       manager.register("NullOp", NullOp.class);
       manager.register("Main Robot Teleop", Main_Robot_Teleop.class);
       manager.register("Auto Red 1 0", Main_Robot_Auto_Red_NoDelay.class);
+    manager.register("autonomus", Main_Robot_Auto_Red_NoDelay2.class);
     /*`
      * Uncomment any of the following lines if you want to register an op mode.
      */
