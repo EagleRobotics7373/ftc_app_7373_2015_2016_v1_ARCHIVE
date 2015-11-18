@@ -98,7 +98,7 @@ public class Main_Robot_Teleop extends OpMode {
         startDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
         runtime.reset();
 
-        //get references from hardware map
+        //get references from hardware map.
         mleft1 = hardwareMap.dcMotor.get("leftf");
         mleft2 = hardwareMap.dcMotor.get("leftr");
         intake = hardwareMap.dcMotor.get("intake");
