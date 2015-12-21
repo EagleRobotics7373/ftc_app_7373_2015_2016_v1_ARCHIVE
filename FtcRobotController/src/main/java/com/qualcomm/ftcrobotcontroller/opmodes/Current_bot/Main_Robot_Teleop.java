@@ -114,14 +114,14 @@ public class Main_Robot_Teleop extends OpMode {
         pullup = hardwareMap.dcMotor.get("pullup");
 
         //set dc motor modes to run with encoders and reset the encoders
-        mleft1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
-        mleft2.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
-        mright1.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
-        mright2.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
-        mleft1.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        mleft2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        mright1.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        mright2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        mleft1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mleft2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mright1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mright2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mleft1.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        mleft2.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        mright1.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        mright2.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     }
 
     /*

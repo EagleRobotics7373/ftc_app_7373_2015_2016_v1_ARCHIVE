@@ -70,13 +70,13 @@ public class Auto extends LinearOpMode {
     //   telemetry.addData("reached line 7", 1);
     mright2 = hardwareMap.dcMotor.get("rightr");
     //  telemetry.addData("reached line 8", 1);
-    mleft1.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+    mleft1.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     //  telemetry.addData("reached line 9", 1);
-    mleft2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+    mleft2.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     // telemetry.addData("reached line 10", 1);
-    mright1.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+    mright1.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     //  telemetry.addData("reached line 11", 1);
-    mright2.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+    mright2.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 
 }
 }

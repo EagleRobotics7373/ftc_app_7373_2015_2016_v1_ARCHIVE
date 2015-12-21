@@ -55,8 +55,8 @@ public class encodertest extends OpMode {
         mleft.setDirection(DcMotor.Direction.REVERSE);
 
         //reset encoders
-        mright.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
-        mleft.setChannelMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mright.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        mleft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     }
 
     /*
