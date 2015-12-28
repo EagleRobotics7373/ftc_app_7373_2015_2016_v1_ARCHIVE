@@ -29,7 +29,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package com.qualcomm.ftcrobotcontroller.opmodes.Current_bot;
+package com.qualcomm.ftcrobotcontroller.opmodes.FTC_example;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -49,16 +49,9 @@ import java.util.Date;
  */
 public class pushbot extends OpMode {
 
-    private String startDate;
-    private ElapsedTime runtime = new ElapsedTime();
 
     DcMotor mright;
     DcMotor mleft;
-    Servo servo;
-
-    int eleft;
-    int eright;
-
     @Override
     public void init() {
     }
@@ -69,12 +62,11 @@ public class pushbot extends OpMode {
        */
     @Override
     public void init_loop() {
-        startDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
-        runtime.reset();
 
         //get references from hardware map
-        mright = hardwareMap.dcMotor.get("arch");
 
+        mright = hardwareMap.dcMotor.get("arch");
+        mleft = hardwareMap.dcMotor.get("arch2");
     }
 
     /*
@@ -83,16 +75,8 @@ public class pushbot extends OpMode {
      */
     @Override
     public void loop() {
-        //reference telemetery
-        telemetry.addData("1 Start", "NullOp started at " + startDate);
-        telemetry.addData("2 Status", "running for " + runtime.toString());
-
-        //get gamepad position
-        float left = gamepad1.right_stick_y;
-        float right = -gamepad1.left_stick_y;
-        right = Range.clip(right, -1, 1);
-        left = Range.clip(left, -1, 1);
-mright.setPower(right);
+        mright.setPower(.9);
+        mleft.setPower(-.9);
 
 
     }

@@ -49,18 +49,17 @@ public class Main_Robot_Teleop extends OpMode {
     private String startDate;
     private ElapsedTime runtime = new ElapsedTime();
 
-    //initiate variables for control
-    DcMotor mright1;
+    //variables are intiated
     DcMotor mleft1;
-    DcMotor mright2;
     DcMotor mleft2;
-    DcMotor arcreactor;
-    DcMotor intake;
+    DcMotor mright1;
+    DcMotor mright2;
     DcMotor convayer;
+    DcMotor intake;
+    DcMotor arcreactor;
     DcMotor pullup;
     Servo servor;
     Servo servol;
-
     // for drive ratio on controller 1
     int mode = 1;
     boolean d_up = gamepad1.dpad_up;
@@ -103,16 +102,15 @@ public class Main_Robot_Teleop extends OpMode {
 
         //get references from hardware map.
         mleft1 = hardwareMap.dcMotor.get("leftf");
+        arcreactor = hardwareMap.dcMotor.get("arc");
         mleft2 = hardwareMap.dcMotor.get("leftr");
-        intake = hardwareMap.dcMotor.get("intake");
         mright1 = hardwareMap.dcMotor.get("rightf");
         mright2 = hardwareMap.dcMotor.get("rightr");
+        intake = hardwareMap.dcMotor.get("intake");
         convayer = hardwareMap.dcMotor.get("conveyer");
-        arcreactor = hardwareMap.dcMotor.get("arch");
-        servol = hardwareMap.servo.get("bridger");
-        servor = hardwareMap.servo.get("bridgel");
+        servor = hardwareMap.servo.get("bridger");
+        servol = hardwareMap.servo.get("bridgel");
         pullup = hardwareMap.dcMotor.get("pullup");
-
         //set dc motor modes to run with encoders and reset the encoders
         mleft1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         mleft2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
