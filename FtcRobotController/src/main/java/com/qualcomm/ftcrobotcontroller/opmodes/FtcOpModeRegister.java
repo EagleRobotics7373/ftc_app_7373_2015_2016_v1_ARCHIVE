@@ -33,7 +33,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.ftcrobotcontroller.opmodes.Current_bot.Main_Robot_Auto_Red_NoDelay2;
 import com.qualcomm.ftcrobotcontroller.opmodes.Current_bot.Main_Robot_Teleop;
-import com.qualcomm.ftcrobotcontroller.opmodes.FTC_example.pushbot;
+import com.qualcomm.ftcrobotcontroller.opmodes.Tiger_bot.Teleop_test1;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
@@ -59,9 +59,9 @@ public class FtcOpModeRegister implements OpModeRegister {
      */
 //current opmodes go here
       manager.register("NullOp", NullOp.class);
-    manager.register("pushbot", pushbot.class);
       manager.register("Main Robot Teleop", Main_Robot_Teleop.class);
     manager.register("autonomus red 1 delay", Main_Robot_Auto_Red_NoDelay2.class);
+    manager.register("Teleop Test", Teleop_test1.class);
     /*`
      * Uncomment any of the following lines if you want to register an op mode.
      */
