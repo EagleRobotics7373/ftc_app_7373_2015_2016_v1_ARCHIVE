@@ -82,19 +82,19 @@ public class Teleop_rev1 extends OpMode {
    * <p>
    *Enables control of the robot via the gamepad
    */
-  public static class Main_Robot_Teleop extends OpMode {
+  public static class Main_Robot_Tele extends OpMode {
     //private String startDate;
    // private ElapsedTime runtime = new ElapsedTime();
 
-    //variables are intiated
-    DcMotor drive_right; // Motor contorller one Hardware map: "DR" fucntion: Controlls right drive motor
-    DcMotor drive_left; // Motor contorller one Hardware map: "DL" function: Contorlls left drive motor
-    DcMotor scissor; // Motor contorller two Hardware map: "scissor" function: Controlls scissor lift lenght
+    //variables are initiated
+    DcMotor drive_right; // Motor controller one Hardware map: "DR" function: Controls right drive motor
+    DcMotor drive_left; // Motor controller one Hardware map: "DL" function: Contorls left drive motor
+    DcMotor scissor; // Motor controller two Hardware map: "scissor" function: Controls scissor lift lenght
     DcMotor table; // Motor controller two Hardware map: "table" function: Rotates turn table
-    DcMotor tpitch; // Motor controller three Hardware map: "tpitch" function: Controlls the rotation of the turn table
-    DcMotor intake; // Motor controller three Hardware map: "intake" fucntion: Controlls intake motors
-    float rpower;
-    float lpower;
+    DcMotor spitch; // Motor controller three Hardware map: "spitch" function: Controls the rotation of the turn table
+    DcMotor intake; // Motor controller three Hardware map: "intake" function: Controls intake motors
+    double rpower;
+    double lpower;
     int pos;
     @Override
     public void init() {
@@ -114,20 +114,20 @@ public class Teleop_rev1 extends OpMode {
       drive_left = hardwareMap.dcMotor.get("DL");
       scissor = hardwareMap.dcMotor.get("scissor");
       table = hardwareMap.dcMotor.get("table");
-      tpitch = hardwareMap.dcMotor.get("tpitch");
+      spitch = hardwareMap.dcMotor.get("spitch");
       intake = hardwareMap.dcMotor.get("intake");
       //Reset encoder
       drive_right.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       drive_left.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       scissor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       table.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-      tpitch.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+      spitch.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       intake.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       // Allow motors to use encoders
       drive_left.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
       scissor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
       table.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-      tpitch.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+      spitch.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
       intake.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     }
 
@@ -136,7 +136,9 @@ public class Teleop_rev1 extends OpMode {
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
      */
 
-  public void set_drive_train()
+
+
+    public void set_drive_train()
     {
       //aquire data from gamepad
       rpower = -gamepad1.right_stick_y;
@@ -148,6 +150,10 @@ public class Teleop_rev1 extends OpMode {
       drive_right.setPower(rpower);
       drive_right.setPower(lpower);
     }
+
+
+
+
     public void runmotor(int max, int min, DcMotor motor1, boolean forward_condition, boolean back_condition, double fpower, double rpower, double stoppower)
     {
     // This function runs a motor and makes sure that it's current position is within a specified range using encoders
@@ -192,26 +198,26 @@ public class Teleop_rev1 extends OpMode {
     } else {
       scissor.setPower(0);
     }
-    if (tpitch.getCurrentPosition() > pitchmin) {
-      tpitch.setPower(-1);
-    } else if (tpitch.getCurrentPosition() < pitchmin)
+    if (spitch.getCurrentPosition() > pitchmin) {
+      spitch.setPower(-1);
+    } else if (spitch.getCurrentPosition() < pitchmin)
     {
-      tpitch.setPower(1);
+      spitch.setPower(1);
     }else{
-      tpitch.setPower(0);
+      spitch.setPower(0);
     }
     //reset encoders
     drive_right.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     drive_left.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     scissor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     table.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    tpitch.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+    spitch.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     intake.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     // Allow motors to use encoders
     drive_left.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     scissor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     table.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    tpitch.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+    spitch.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     intake.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
   }
     @Override
@@ -219,7 +225,7 @@ public class Teleop_rev1 extends OpMode {
       set_drive_train(); //runs the drive train motors
       runmotor(0, 10000, scissor, gamepad2.dpad_up, gamepad2.dpad_down, .5, -.5, 0); // run scissor lift
       runmotor(0, 10000, table, gamepad2.right_bumper, gamepad2.left_bumper, .5, -.5, 0); // run turn table
-      runmotor(0, 10000, tpitch, gamepad2.a, gamepad2.b, 1, -1, 0); //runs the pitch motor for the scissor lift
+      runmotor(0, 10000, spitch, gamepad2.a, gamepad2.b, 1, -1, 0); //runs the pitch motor for the scissor lift
       intake.setPower(gamepad1.right_trigger); //sets intake power
       if(gamepad1.x)
       {

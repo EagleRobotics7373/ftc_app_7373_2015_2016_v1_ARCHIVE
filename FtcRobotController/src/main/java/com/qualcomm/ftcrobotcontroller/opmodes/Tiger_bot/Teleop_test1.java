@@ -34,6 +34,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes.Tiger_bot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -50,30 +51,46 @@ public class Teleop_test1 extends OpMode {
     private String startDate;
     private ElapsedTime runtime = new ElapsedTime();
 
-    //add motors for turntable and drive
-    DcMotor leftmotor;
-    DcMotor rightmotor;
-    DcMotor turntable;
+    //add motors variables
+    DcMotor drive_left;
+    DcMotor drive_right;
+    DcMotor table;
+    DcMotor scissor;
+    DcMotor intake;
+    DcMotor spitch;
 
-    //add drive power variables
-    double driveleft;
-    double driveright;
-
-    double drivetable;
+    //add servos
+    Servo boxflap;
 
     //@Override
     public void init() {
-        //retreive motors from hardware ma
-        leftmotor = hardwareMap.dcMotor.get("leftmotor");
-        rightmotor = hardwareMap.dcMotor.get("rightmotor");
+        //retrieve motors from hardware ma
+        drive_left = hardwareMap.dcMotor.get("drive_left");
+        drive_right = hardwareMap.dcMotor.get("drive_right");
+        table = hardwareMap.dcMotor.get("table");
+        scissor = hardwareMap.dcMotor.get("scissor");
+        intake = hardwareMap.dcMotor.get("intake");
+        spitch = hardwareMap.dcMotor.get("spitch");
 
-        turntable = hardwareMap.dcMotor.get("turntable");
+        //get servos from hardware map
+        boxflap = hardwareMap.servo.get("boxflap");
 
         //set motors channel mode
-        leftmotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        rightmotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        drive_left.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        drive_right.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        table.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        scissor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        intake.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        spitch.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 
-        turntable.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //reset all encoders
+        drive_left.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        drive_right.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        table.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        scissor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        intake.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        spitch.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+
 
 
     }
@@ -87,6 +104,32 @@ public class Teleop_test1 extends OpMode {
         startDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
         runtime.reset();
         telemetry.addData("Null Op Init Loop", runtime.toString());
+
+    }
+
+    /*class to run any motor
+    Argument 1 is motor
+    Argument 2 is motor drive power
+    Argument 3 is coefficient to apply to motor power
+    Everything is clipped to prevent out of range errors
+     */
+    public void motor_run(DcMotor motor, Double motor_power, Double motor_coef) {
+        motor_power = Range.clip(-1, 1, motor_power);
+        motor_power = motor_power*motor_coef;
+        motor.setPower(motor_power);
+
+    }
+
+    /*class to run any servo
+    Argument 1 is servo
+    Argument 2 is servo position in degrees
+    The variable servo_deg is converted from degrees into -1 to 1 by a coefficient 1/180.
+    This value is then clipped to prevent out of range errors
+     */
+    public void servo_set(Servo servo, Double servo_deg) {
+        servo_deg = (1/180)*servo_deg;
+        servo_deg = Range.clip(-1,1, servo_deg);
+        servo.setPosition(servo_deg);
     }
 
     /*
@@ -98,20 +141,6 @@ public class Teleop_test1 extends OpMode {
         telemetry.addData("1 Start", "NullOp started at " + startDate);
         telemetry.addData("2 Status", "running for " + runtime.toString());
 
-        //get drive values from the controllers
-        driveleft = -gamepad1.left_stick_y;
-        driveright = gamepad1.right_stick_y;
-        drivetable = -gamepad2.right_stick_x;
-
-        driveleft = Range.clip(driveleft, -1, 1);
-        driveright = Range.clip(driveright, -1, 1);
-        drivetable = Range.clip(drivetable, -1, 1);
-
-
-        //drive the motors
-        leftmotor.setPower(driveleft);
-        rightmotor.setPower(driveright);
-        turntable.setPower(drivetable);
 
 
     }
