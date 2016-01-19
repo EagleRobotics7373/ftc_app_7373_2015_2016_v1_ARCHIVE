@@ -60,6 +60,9 @@ public class Main_Robot_Teleop extends OpMode {
     DcMotor pullup;
     Servo servor;
     Servo servol;
+    Servo Hamer;
+    Servo lefthand;
+    Servo righthand;
     // for drive ratio on controller 1
     int mode = 1;
     boolean d_up = gamepad1.dpad_up;
@@ -108,9 +111,12 @@ public class Main_Robot_Teleop extends OpMode {
         mright2 = hardwareMap.dcMotor.get("rightr");
         intake = hardwareMap.dcMotor.get("intake");
         convayer = hardwareMap.dcMotor.get("conveyer");
-        servor = hardwareMap.servo.get("bridger");
-        servol = hardwareMap.servo.get("bridgel");
+        servor = hardwareMap.servo.get("door_right");
+        servol = hardwareMap.servo.get("door_left");
         pullup = hardwareMap.dcMotor.get("pullup");
+        Hamer = hardwareMap.servo.get("hammer");
+        lefthand = hardwareMap.servo.get("left_hand");
+        righthand = hardwareMap.servo.get("right_hand");
         //set dc motor modes to run with encoders and reset the encoders
         mleft1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         mleft2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -132,6 +138,31 @@ public class Main_Robot_Teleop extends OpMode {
         //reference telemetery
         telemetry.addData("1 Start", "TeleOP started at " + startDate);
         telemetry.addData("2 Status", "running for " + runtime.toString());
+        if (gamepad1.y)
+        {
+            Hamer.setPosition(1);
+        }
+        if (gamepad1.a)
+        {
+            Hamer.setPosition(-.5);
+        }
+        if(gamepad1.left_bumper)
+        {
+            lefthand.setPosition(1);
+        }
+        if(gamepad1.left_trigger > .1)
+        {
+            lefthand.setPosition(-.5);
+        }
+
+        if(gamepad1.right_bumper)
+        {
+            lefthand.setPosition(1);
+        }
+        if(gamepad1.right_trigger > .1)
+        {
+            lefthand.setPosition(-.5);
+        }
 
         //get gamepad position and set dpad vars accordingly
         if (gamepad1.dpad_up) {

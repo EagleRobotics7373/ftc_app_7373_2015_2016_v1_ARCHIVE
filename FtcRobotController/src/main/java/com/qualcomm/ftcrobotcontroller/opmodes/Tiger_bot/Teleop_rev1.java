@@ -223,7 +223,7 @@ public class Teleop_rev1 extends OpMode {
     @Override
     public void loop() {
       set_drive_train(); //runs the drive train motors
-      runmotor(0, 10000, scissor, gamepad2.dpad_up, gamepad2.dpad_down, .5, -.5, 0); // run scissor lift
+     // runmotor(0, 10000, scissor, gamepad2.dpad_up, gamepad2.dpad_down, .5, -.5, 0); // run scissor lift
       runmotor(0, 10000, table, gamepad2.right_bumper, gamepad2.left_bumper, .5, -.5, 0); // run turn table
       runmotor(0, 10000, spitch, gamepad2.a, gamepad2.b, 1, -1, 0); //runs the pitch motor for the scissor lift
       intake.setPower(gamepad1.right_trigger); //sets intake power

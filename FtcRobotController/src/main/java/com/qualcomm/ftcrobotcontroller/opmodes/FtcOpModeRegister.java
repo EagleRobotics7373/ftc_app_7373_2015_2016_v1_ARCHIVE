@@ -63,6 +63,7 @@ public class FtcOpModeRegister implements OpModeRegister {
       manager.register("Motor Test OP", Teleop_test1.class);
       manager.register("Tiger Team Teleop", Teleop_rev1.class);
       manager.register("Alpha Team Teleop", Main_Robot_Teleop.class);
+    manager.register("Range_Test", Range_Test.class);
     /*`
      * Uncomment any of the following lines if you want to register an op mode.
      */
