@@ -54,13 +54,13 @@ public class Main_Robot_Teleop extends OpMode {
     DcMotor mleft2;
     DcMotor mright1;
     DcMotor mright2;
-    DcMotor convayer;
+    DcMotor conveyer;
     DcMotor intake;
     DcMotor arcreactor;
-    DcMotor pullup;
+   // DcMotor pullup;
     Servo servor;
     Servo servol;
-    Servo Hamer;
+    Servo hammer;
     Servo lefthand;
     Servo righthand;
     // for drive ratio on controller 1
@@ -70,8 +70,8 @@ public class Main_Robot_Teleop extends OpMode {
     boolean d_down = gamepad1.dpad_down;
     boolean d_left = gamepad1.dpad_left;
     //for left and right bumpers of controller 2
-    boolean convayerf;
-    boolean convayerb;
+    boolean conveyerf;
+    boolean conveyerb;
     //for left and right triggers on controller 2
     float intakef;
     float intakeb;
@@ -110,11 +110,11 @@ public class Main_Robot_Teleop extends OpMode {
         mright1 = hardwareMap.dcMotor.get("rightf");
         mright2 = hardwareMap.dcMotor.get("rightr");
         intake = hardwareMap.dcMotor.get("intake");
-        convayer = hardwareMap.dcMotor.get("conveyer");
+        conveyer = hardwareMap.dcMotor.get("conveyer");
         servor = hardwareMap.servo.get("door_right");
         servol = hardwareMap.servo.get("door_left");
-        pullup = hardwareMap.dcMotor.get("pullup");
-        Hamer = hardwareMap.servo.get("hammer");
+       //  pullup = hardwareMap.dcMotor.get("pullup");
+        hammer = hardwareMap.servo.get("hammer");
         lefthand = hardwareMap.servo.get("left_hand");
         righthand = hardwareMap.servo.get("right_hand");
         //set dc motor modes to run with encoders and reset the encoders
@@ -140,11 +140,11 @@ public class Main_Robot_Teleop extends OpMode {
         telemetry.addData("2 Status", "running for " + runtime.toString());
         if (gamepad1.y)
         {
-            Hamer.setPosition(1);
+            hammer.setPosition(1);
         }
         if (gamepad1.a)
         {
-            Hamer.setPosition(-.5);
+            hammer.setPosition(-.5);
         }
         if(gamepad1.left_bumper)
         {
@@ -230,14 +230,14 @@ public class Main_Robot_Teleop extends OpMode {
 
 
         //conveyer system
-        convayerf = gamepad2.right_bumper;
-        convayerb = gamepad2.left_bumper;
-        if (convayerf) {
-            convayer.setPower(-1);
-        } else if (convayerb) {
-            convayer.setPower(1);
+        conveyerf = gamepad2.right_bumper;
+        conveyerb = gamepad2.left_bumper;
+        if (conveyerf) {
+            conveyer.setPower(-1);
+        } else if (conveyerb) {
+            conveyer.setPower(1);
         } else {
-            convayer.setPower(0);
+            conveyer.setPower(0);
         }
 
         //get servo bridges controller values
@@ -270,7 +270,7 @@ public class Main_Robot_Teleop extends OpMode {
             //Arc reactor write motor power scaled by half
             arcreactor.setPower(-right2);
             //PullUp write motor power scaled by half
-            pullup.setPower(left2);
+           // pullup.setPower(left2);
 
         }
     }
