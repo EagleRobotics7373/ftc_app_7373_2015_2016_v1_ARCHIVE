@@ -145,7 +145,7 @@ public class Main_Robot_Teleop extends OpMode {
         }
         if (gamepad1.a)
         {
-            hammer.setPosition(-.5);
+            hammer.setPosition(0);
         }
         if(gamepad1.left_bumper)
         {
@@ -153,7 +153,7 @@ public class Main_Robot_Teleop extends OpMode {
         }
         if(gamepad1.left_trigger > .1)
         {
-            lefthand.setPosition(-.5);
+            lefthand.setPosition(0);
         }
 
         if(gamepad1.right_bumper)
@@ -162,7 +162,7 @@ public class Main_Robot_Teleop extends OpMode {
         }
         if(gamepad1.right_trigger > .1)
         {
-            lefthand.setPosition(-.5);
+            lefthand.setPosition(0);
         }
 
         //get gamepad position and set dpad vars accordingly
@@ -253,13 +253,13 @@ public class Main_Robot_Teleop extends OpMode {
                 servor.setPosition(1);
             }
             if (y){
-                servor.setPosition(.2);
+                servor.setPosition(.5);
             }
             if (x) {
                 servol.setPosition(1);
             }
             if (a){
-                servol.setPosition(.4);
+                servol.setPosition(.5);
             }
 
 
