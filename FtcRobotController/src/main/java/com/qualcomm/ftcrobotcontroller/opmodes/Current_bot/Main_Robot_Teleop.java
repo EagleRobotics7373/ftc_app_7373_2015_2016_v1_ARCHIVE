@@ -90,6 +90,7 @@ public class Main_Robot_Teleop extends OpMode {
 
     boolean rev = false;
     int k = 1;
+   // boolean first_pass = true;
 
     @Override
     public void init() {
@@ -127,6 +128,13 @@ public class Main_Robot_Teleop extends OpMode {
         mleft2.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright1.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright2.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+
+        righthand.setPosition(0.9);
+        lefthand.setPosition(0.0);
+        servor.setPosition(0.25); // close
+        servol.setPosition(0.50); //close
+
+
     }
 
     /*
@@ -135,34 +143,47 @@ public class Main_Robot_Teleop extends OpMode {
      */
     @Override
 
-    public void loop() {
+    public void loop()
+    {
         //reference telemetery
         telemetry.addData("1 Start", "TeleOP started at " + startDate);
         telemetry.addData("2 Status", "running for " + runtime.toString());
+
+      /*  if (first_pass = true)
+        {
+            hammer.setPosition(0);
+            lefthand.setPosition(0.10);
+            righthand.setPosition(0.75);
+
+            first_pass = false;
+
+        }
+*/
         if (gamepad1.y)
         {
-            hammer.setPosition(1);
+            hammer.setPosition(0.8);
         }
         if (gamepad1.a)
         {
             hammer.setPosition(0);
         }
+
         if(gamepad1.left_bumper)
         {
-            lefthand.setPosition(1);
+            lefthand.setPosition(0.0); // closed
         }
         if(gamepad1.left_trigger > .1)
         {
-            lefthand.setPosition(0);
+            lefthand.setPosition(0.65); // open
         }
 
         if(gamepad1.right_bumper)
         {
-            lefthand.setPosition(1);
+            righthand.setPosition(0.9); // closed
         }
         if(gamepad1.right_trigger > .1)
         {
-            lefthand.setPosition(0);
+            righthand.setPosition(0.10); // open
         }
 
         //get gamepad position and set dpad vars accordingly
@@ -196,7 +217,7 @@ public class Main_Robot_Teleop extends OpMode {
             mode = 3;
         }
 
-        //get rev value
+        /*get rev value
         if(gamepad1.right_bumper){
             rev = !rev;
         }
@@ -205,17 +226,17 @@ public class Main_Robot_Teleop extends OpMode {
         } else {
             k = 1;
         }
-
+*/
         //get gamepad 1 joystick position and clip values
         left = gamepad1.left_stick_y;
         right = gamepad1.right_stick_y;
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
         //drive system
-        mleft1.setPower(-left*k);
-        mleft2.setPower(-left*k);
-        mright1.setPower(right*k);
-        mright2.setPower(right*k);
+        mleft1.setPower(-left);  // front left motor
+        mleft2.setPower(-left);  // rear left motor
+        mright1.setPower(right);  // front right motor
+        mright2.setPower(right);  // rear right motor
 
 
         //get intake drive values
@@ -242,24 +263,28 @@ public class Main_Robot_Teleop extends OpMode {
         }
 
         //get servo bridges controller values
-        b = gamepad1.b;
-        x = gamepad1.x;
-        y = gamepad1.y;
-        a = gamepad1.a;
+        b = gamepad2.b;
+        x = gamepad2.x;
+        y = gamepad2.y;
+        a = gamepad2.a;
 
         //check the values and write to control bool
             // take control bool and write to servo
+
+           // right door
             if (b) {
-                servor.setPosition(1);
+                servor.setPosition(0.50); // open
             }
             if (y){
-                servor.setPosition(.5);
+                servor.setPosition(0.25); // close
             }
+
+        // left door
             if (x) {
-                servol.setPosition(1);
+                servol.setPosition(0.50); //close
             }
             if (a){
-                servol.setPosition(.5);
+                servol.setPosition(0.75); // open
             }
 
 
