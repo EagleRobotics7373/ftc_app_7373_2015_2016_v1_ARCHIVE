@@ -281,10 +281,10 @@ public class Main_Robot_Teleop extends OpMode {
 
         // left door
             if (x) {
-                servol.setPosition(0.50); //close
+                servol.setPosition(0.75); //close
             }
             if (a){
-                servol.setPosition(0.75); // open
+                servol.setPosition(0.50); // open
             }
 
 
@@ -294,7 +294,7 @@ public class Main_Robot_Teleop extends OpMode {
             left2 = Range.clip(left2, -1, 1);
             right2 = Range.clip(right2, -1, 1);
             //Arc reactor write motor power scaled by half
-            arcreactor.setPower(-right2);
+            arcreactor.setPower(right2);
             //PullUp write motor power scaled by half
            // pullup.setPower(left2);
 
