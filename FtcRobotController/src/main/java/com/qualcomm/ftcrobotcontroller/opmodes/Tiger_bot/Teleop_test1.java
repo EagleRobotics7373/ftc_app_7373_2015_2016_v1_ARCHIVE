@@ -70,9 +70,9 @@ public class Teleop_test1 extends OpMode {
     //@Override
     public void init() {
         //retrieve motors from hardware ma
-        drive_left = hardwareMap.dcMotor.get("drive_left");
-        drive_right = hardwareMap.dcMotor.get("drive_right");
-        table = hardwareMap.dcMotor.get("table");
+        drive_left = hardwareMap.dcMotor.get("leftmotor");
+        drive_right = hardwareMap.dcMotor.get("rightmotor");
+        table = hardwareMap.dcMotor.get("turntable");
         scissor = hardwareMap.dcMotor.get("scissor");
         intake = hardwareMap.dcMotor.get("intake");
         spitch = hardwareMap.dcMotor.get("spitch");
@@ -180,7 +180,7 @@ public class Teleop_test1 extends OpMode {
         if(gamepad1.dpad_down){driveratio=gear1;}
         if(gamepad1.dpad_left){driveratio=gear2;}
         if(gamepad1.dpad_right){driveratio=gear3;}
-        //right and left bumpers control table, gampad right stick controls the scissor lift length
+        //right and left bumpers control turntable, gampad right stick controls the scissor lift length
         //and left stick controls scissor lift pitch A button controls intake
         if (gamepad2.right_bumper)
         {
