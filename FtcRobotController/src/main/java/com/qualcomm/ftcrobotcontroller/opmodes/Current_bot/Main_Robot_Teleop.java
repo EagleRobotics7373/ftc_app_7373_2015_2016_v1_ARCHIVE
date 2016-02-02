@@ -78,7 +78,7 @@ public class Main_Robot_Teleop extends OpMode {
        */
     @Override
     public void init_loop() {
-        startDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
+       // startDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
         runtime.reset();
 
         //get references from hardware map.
@@ -96,7 +96,7 @@ public class Main_Robot_Teleop extends OpMode {
         lefthand = hardwareMap.servo.get("left_hand");
         righthand = hardwareMap.servo.get("right_hand");
         //set dc motor modes to run with encoders and reset the encoders
-        mleft1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+       /* mleft1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         mleft2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         mright1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         mright2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -104,6 +104,8 @@ public class Main_Robot_Teleop extends OpMode {
         mleft2.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright1.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright2.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        */
+
 
 
 
@@ -160,6 +162,7 @@ public class Main_Robot_Teleop extends OpMode {
         }
 
         //get gamepad position and set dpad vars accordingly
+        /*
         if (gamepad1.dpad_up) {
             d_up = true;
             d_right = false;
@@ -199,7 +202,8 @@ public class Main_Robot_Teleop extends OpMode {
         } else {
             k = 1;
         }
-*/
+        */
+
         //get gamepad 1 joystick position and clip values
         left = gamepad1.left_stick_y;
         right = gamepad1.right_stick_y;
@@ -262,12 +266,12 @@ public class Main_Robot_Teleop extends OpMode {
 
 
             //get gamepad 2 joystick values and clip ranges
-            left2 = -gamepad2.right_stick_y;
-            right2 = -gamepad2.left_stick_y;
+            right2 = -gamepad2.right_stick_y;
+            left2 = -gamepad2.left_stick_y;
             left2 = Range.clip(left2, -1, 1);
             right2 = Range.clip(right2, -1, 1);
             //Arc reactor write motor power scaled by half
-            arcreactor.setPower(right2);
+            arcreactor.setPower(left2);
             //PullUp write motor power scaled by half
            // pullup.setPower(left2);
 

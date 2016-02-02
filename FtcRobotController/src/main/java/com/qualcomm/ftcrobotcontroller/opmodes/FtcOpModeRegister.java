@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.Current_bot.Autonomous_1_Alpha_Bot;
 import com.qualcomm.ftcrobotcontroller.opmodes.Current_bot.Main_Robot_Auto_Red_NoDelay2;
 import com.qualcomm.ftcrobotcontroller.opmodes.Current_bot.Main_Robot_Teleop;
 import com.qualcomm.ftcrobotcontroller.opmodes.Tiger_bot.Telemetry_OP;
@@ -63,6 +64,8 @@ public class FtcOpModeRegister implements OpModeRegister {
       manager.register("NullOp", NullOp.class);
       manager.register("Tiger Team", Teleop_rev1.class);
       manager.register("Telemetry", Telemetry_OP.class);
+    manager.register("Auto 1 - Alpha", Autonomous_1_Alpha_Bot.class);
+    manager.register("TeleOp - Alpha", Main_Robot_Teleop.class);
 
     /*`
      * Uncomment any of the following lines if you want to register an op mode.
