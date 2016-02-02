@@ -45,19 +45,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class encoder extends OpMode {
 
     //variables are intiated
-    DcMotor mleft1;
-    DcMotor mleft2;
-    DcMotor mright1;
-    DcMotor mright2;
+    DcMotor mleft1, mleft2, mright1, mright2;
+
     DcMotor conveyer;
     DcMotor intake;
     DcMotor arcreactor;
     // DcMotor pullup;
-    Servo servor;
-    Servo servol;
+    Servo servor, servol;
     Servo hammer;
-    Servo lefthand;
-    Servo righthand;
+    Servo lefthand, righthand;
+
+    double waitTime;
 
     @Override
     public void init() {
@@ -95,6 +93,10 @@ public class encoder extends OpMode {
     @Override
     public void start() {
 
+        resetStartTime();
+
+
+
         //set motor run mode
         mright1.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         mright2.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
@@ -112,32 +114,47 @@ public class encoder extends OpMode {
 
     public void loop() {
 
+        waitTime = 2;
+
         if(mright2.getCurrentPosition() >= 11120 || mright2.getCurrentPosition() <= -11120 ) {
-            mright1.setPower(0);
-            mleft1.setPower(0);
-            mright2.setPower(0);
-            mleft2.setPower(0);
+
+            intake.setPower(0f);
+            mright1.setPower(0f);
+            mleft1.setPower(0f);
+            mright2.setPower(0f);
+            mleft2.setPower(0f);
         }
         else {
-            mright1.setPower(1);
-            mleft1.setPower(1);
-            mright2.setPower(1);
-            mleft2.setPower(1);
+            intake.setPower(-1f);
+            mright1.setPower(1f);
+            mleft1.setPower(1f);
+            mright2.setPower(1f);
+            mleft2.setPower(1f);
         }
 
-        wait(1000);
-        hammer.setPosition(0.8);
 
-        wait(2000);
+        resetStartTime();
+        waitTime = 3;
 
-        hammer.setPosition(0);
+        while(waitTime < getRuntime()) {
 
-        mleft1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        mleft2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        mright1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        mright2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            hammer.setPosition(0.8);
+        }
 
-        wait(1000);
+        resetStartTime();
+        waitTime = 2;
+
+        while(waitTime < getRuntime()) {
+
+            hammer.setPosition(0);
+
+
+            mleft1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            mleft2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            mright1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            mright2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+
+        }
 
         if(mright2.getCurrentPosition() <= 1120 || mright2.getCurrentPosition() >= -1120 ) {
             mright1.setPower(0);
@@ -153,13 +170,10 @@ public class encoder extends OpMode {
 
 
     }
-    public void stop() {
-        mright1.setPower(0);
-        mleft1.setPower(0);
-        mright2.setPower(0);
-        mleft2.setPower(0);
+
     }
-    }
+}
+
 
 
 
