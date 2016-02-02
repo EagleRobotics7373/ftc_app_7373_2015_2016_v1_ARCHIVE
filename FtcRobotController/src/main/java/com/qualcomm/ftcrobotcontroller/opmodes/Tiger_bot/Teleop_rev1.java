@@ -34,6 +34,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes.Tiger_bot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -86,16 +87,24 @@ public class Teleop_rev1 extends OpMode {
     //private String startDate;
    // private ElapsedTime runtime = new ElapsedTime();
 
-    //variables are initiated
-    DcMotor drive_right; // Motor controller one Hardware map: "DR" function: Controls right drive motor
-    DcMotor drive_left; // Motor controller one Hardware map: "DL" function: Contorls left drive motor
+    //get motors from hardware map
+    DcMotor rightmotor; // Motor controller one Hardware map: "DR" function: Controls right drive motor
+    DcMotor leftmotor; // Motor controller one Hardware map: "DL" function: Contorls left drive motor
     DcMotor scissor; // Motor controller two Hardware map: "scissor" function: Controls scissor lift lenght
-    DcMotor table; // Motor controller two Hardware map: "table" function: Rotates turn table
-    DcMotor spitch; // Motor controller three Hardware map: "spitch" function: Controls the rotation of the turn table
+    DcMotor turntable; // Motor controller two Hardware map: "turntable" function: Rotates turn turntable
+    DcMotor spitch; // Motor controller three Hardware map: "spitch" function: Controls the rotation of the turn turntable
     DcMotor intake; // Motor controller three Hardware map: "intake" function: Controls intake motors
+
+    //get servos from hardware map
+    Servo lefttrigger;
+    Servo righttrigger;
+    Servo dropdown;
+    Servo boxflap;
+
+    //variables
     double rpower;
     double lpower;
-    int pos;
+
     @Override
     public void init() {
     }
@@ -110,23 +119,29 @@ public class Teleop_rev1 extends OpMode {
       //runtime.reset();
 
       //get references from hardware map.
-      drive_right = hardwareMap.dcMotor.get("DR");
-      drive_left = hardwareMap.dcMotor.get("DL");
+      rightmotor = hardwareMap.dcMotor.get("rightmotor");
+      leftmotor = hardwareMap.dcMotor.get("leftmotor");
       scissor = hardwareMap.dcMotor.get("scissor");
-      table = hardwareMap.dcMotor.get("table");
+      turntable = hardwareMap.dcMotor.get("turntable");
       spitch = hardwareMap.dcMotor.get("spitch");
       intake = hardwareMap.dcMotor.get("intake");
+      lefttrigger = hardwareMap.servo.get("lefttrigger");
+      righttrigger = hardwareMap.servo.get("righttrigger");
+      dropdown = hardwareMap.servo.get("dropdown");
+      boxflap = hardwareMap.servo.get("boxflap");
+
+
       //Reset encoder
-      drive_right.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-      drive_left.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+      rightmotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+      leftmotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       scissor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-      table.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+      turntable.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       spitch.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       intake.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       // Allow motors to use encoders
-      drive_left.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+      leftmotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
       scissor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-      table.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+      turntable.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
       spitch.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
       intake.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     }
@@ -147,90 +162,95 @@ public class Teleop_rev1 extends OpMode {
       rpower = Range.clip(rpower, -1, 1);
       lpower = Range.clip(lpower, -1, 1);
       //Set power for drive motors
-      drive_right.setPower(rpower);
-      drive_right.setPower(lpower);
+      rightmotor.setPower(rpower);
+      rightmotor.setPower(lpower);
+    }
+
+    //motor run class
+    public void runmotor(DcMotor motor, double k, Boolean conditionmotor){
+      if(conditionmotor) {
+        k = Range.clip(k, -1, 1);
+        motor.setPower(k);
+      }
     }
 
 
-
-
-    public void runmotor(int max, int min, DcMotor motor1, boolean forward_condition, boolean back_condition, double fpower, double rpower, double stoppower)
-    {
-    // This function runs a motor and makes sure that it's current position is within a specified range using encoders
-      // Params:   max(type: integer, function: set max encoder value that motor can move to)
-      // min(type: integer, function: set min encoder value that motor can move to)
-      //  motor1(type: DcMotor, function: set the motor that will run)
-      // forward_condition(type: boolean, function: if this condition is true the power of motor 1 will be set to fpower)
-      // back_condition(type: boolean, function: if this condition is true the power of motor 1 will be set to rpower)
-      // fpower(type: double, function: power to set motor one to when forward_condition is true)
-      // rpower(type: double, function: power to set motor one to when back_condition is true)
-      // stoppower(type: double, function: power to set motor one to when both forward_condition and back_condition are true)
-      if (forward_condition) {
-         if(scissor.getCurrentPosition() < max) { // Keep within range
-           motor1.setPower(fpower);  // if the dpad up button is pressed move the scissor up
-         }
-       }
-       if (back_condition) {
-         if(scissor.getCurrentPosition() > min) { // Keep within range
-           motor1.setPower(rpower);// if the dpad down button is pressed move the scissor down
-         }
-       }
-       if (!forward_condition && !back_condition) {
-         motor1.setPower(stoppower); // if no dpad buttons are pressed set turn off the scissor motor
-       }
-
+    //servo run class
+    public void setservo (Servo servo, double p, Boolean conditionservo) {
+      if (conditionservo) {
+        p = Range.clip(p, 0, 1);
+        servo.setPosition(p);
+      }
     }
+
+    public void resetencoders () {
+      //reset encoders
+      rightmotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+      leftmotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+      scissor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+      turntable.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+      spitch.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+      intake.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+    }
+    //class to reset the whole robot
   public void reset() {
-    int tcenter = 360;
-    int pitchmin = 0;
-    int scissormin = 0;
-    if (table.getCurrentPosition() > tcenter) {
-      table.setPower(-.5);
-    } else if (table.getCurrentPosition() < tcenter) {
-      table.setPower(.5);
-    } else {
-      table.setPower(0);
-    }
-    if (scissor.getCurrentPosition() > scissormin) {
-      scissor.setPower(-1);
-    } else if (scissor.getCurrentPosition() < scissormin) {
-      scissor.setPower(1);
-    } else {
-      scissor.setPower(0);
-    }
-    if (spitch.getCurrentPosition() > pitchmin) {
-      spitch.setPower(-1);
-    } else if (spitch.getCurrentPosition() < pitchmin)
-    {
-      spitch.setPower(1);
-    }else{
-      spitch.setPower(0);
-    }
+    //reset servo
+    boxflap.setPosition(0);
+    dropdown.setPosition(0);
+    lefttrigger.setPosition(0);
+    righttrigger.setPosition(0);
+
+    //reset motor power
+    rightmotor.setPower(0);
+    leftmotor.setPower(0);
+    scissor.setPower(0);
+    turntable.setPower(0);
+    spitch.setPower(0);
+    intake.setPower(0);
+
     //reset encoders
-    drive_right.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    drive_left.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+    rightmotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+    leftmotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     scissor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    table.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+    turntable.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     spitch.setMode(DcMotorController.RunMode.RESET_ENCODERS);
     intake.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-    // Allow motors to use encoders
-    drive_left.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    scissor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    table.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    spitch.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-    intake.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
   }
+
+
+
     @Override
     public void loop() {
-      set_drive_train(); //runs the drive train motors
-     // runmotor(0, 10000, scissor, gamepad2.dpad_up, gamepad2.dpad_down, .5, -.5, 0); // run scissor lift
-      runmotor(0, 10000, table, gamepad2.right_bumper, gamepad2.left_bumper, .5, -.5, 0); // run turn table
-      runmotor(0, 10000, spitch, gamepad2.a, gamepad2.b, 1, -1, 0); //runs the pitch motor for the scissor lift
-      intake.setPower(gamepad1.right_trigger); //sets intake power
-      if(gamepad1.x)
-      {
-        reset(); //resets position of all motors
-      }
+      //run the drive train
+      set_drive_train();
+
+      //drop the intake and run it
+      setservo(dropdown, 1, gamepad1.back);
+      runmotor(intake, gamepad2.right_trigger, true);
+
+      //run the scissor and tilt
+      runmotor(scissor, -gamepad2.right_stick_y, true);
+      runmotor(spitch, -gamepad2.left_stick_y, true);
+
+      //turn the turntable
+      runmotor(turntable, .5, gamepad2.right_bumper);
+      runmotor(turntable, -.5, gamepad2.left_bumper);
+
+      //run the zipliner triggers
+      setservo(lefttrigger, 1, gamepad1.x);
+      setservo(righttrigger, 1, gamepad1.b);
+      setservo(lefttrigger, 0, gamepad1.y);
+      setservo(righttrigger, 0, gamepad1.y);
+
+      //open and close the box flap
+      setservo(boxflap, 1, gamepad1.dpad_down);
+      setservo(boxflap, .5, gamepad1.dpad_left);
+      setservo(boxflap, .5, gamepad1.dpad_right);
+      setservo(boxflap, 0, gamepad1.dpad_up);
+
+
+
+
     }
   }
 }
